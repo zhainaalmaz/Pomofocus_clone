@@ -1,0 +1,24 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 8px;
+  height: 33px;
+  color: white;
+  background: #ffffff33;
+  border: none;
+  border-radius: 3px;
+}
+
+.button:hover {
+  opacity: 1;
+}
+
+.button:active {
+  transform: translateY(0.125rem);
+  box-shadow: none;
+}
+
+.button:focus {
+  background: rgba(126, 38, 38, 0.2);
+}

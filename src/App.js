@@ -1,24 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './Components/Headers/Header';
+import Timer from './Components/Timer/Timer';
+import Card from './Components/UI/Card/Card';
+// import { useSelector } from 'react-redux';
+// import { COLORS } from './Components/utils/constants';
 
 function App() {
+  // const bggg = useSelector((state) => state.timer.currentMode);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Card>
+      <div className="App">
+        <Header />
+        <div>
+          <Timer />
+        </div>
+      </div>
+    </Card>
   );
 }
 

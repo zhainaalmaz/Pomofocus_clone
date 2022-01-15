@@ -1,0 +1,22 @@
+.pomodoro {
+  font-size: 4em;
+}
+
+.message {
+  font-size: 0.2em;
+  min-height: 1em;
+  margin-bottom: 0.5em;
+}
+
+.timer {
+  height: 146px;
+  right: 60px;
+  margin-top: 54px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 120px;
+  line-height: 146px;
+
+  color: #ffffff;
+}

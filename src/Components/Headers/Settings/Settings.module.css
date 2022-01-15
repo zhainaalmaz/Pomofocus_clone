@@ -1,0 +1,93 @@
+.title {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+  text-transform: uppercase;
+  color: #bcbcbc;
+  margin-top: 40px;
+}
+
+.mainTitle {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.mainTitle img {
+  position: static;
+  width: 34px;
+  left: 262px;
+  margin-top: 36px;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-around;
+}
+
+.subTitle {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+  color: #000000;
+  position: static;
+  width: 100px;
+  height: 15px;
+  margin-left: 40px;
+  margin-top: 14px;
+  margin-bottom: 11px;
+}
+
+.pomodoro {
+  width: 64px;
+}
+
+.label {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #bcbcbc;
+}
+
+.autStart {
+  display: flex;
+  justify-content: space-between;
+  height: 65px;
+  padding: 25px;
+}
+
+.starts h2 {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  color: #000000;
+  height: 22px;
+}
+
+.confirm {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+}
+
+.confirm button {
+  width: 79px;
+  height: 49px;
+  left: 361px;
+  top: 430px;
+  background: #373737;
+  border-radius: 6px;
+  color: white;
+}
+
+.line {
+  width: 350px;
+}

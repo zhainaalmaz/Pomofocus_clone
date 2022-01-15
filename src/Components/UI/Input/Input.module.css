@@ -1,0 +1,12 @@
+.input {
+  position: static;
+  width: 61px;
+  height: 37px;
+  left: 0px;
+  top: 23px;
+
+  background: #efefef;
+  border-radius: 6px;
+  border: none;
+  padding: 10px;
+}
