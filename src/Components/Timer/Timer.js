@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classes from './Timer.module.css';
 import Button from '../UI/Button/Button';
@@ -15,7 +15,7 @@ const Timer = () => {
   const mode = useSelector((state) => state.timer.mode);
 
   const [timer, setTimer] = React.useState(null);
-  const [isActive, setIsActive] = React.useState(false); // для изменения start на pause
+  const [isActive, setIsActive] = React.useState(false);
   const [time, setTime] = React.useState({
     min: mode.time,
     sec: 0,
@@ -35,19 +35,19 @@ const Timer = () => {
     let myInterval = setInterval(() => {
       percentage();
       setTime((time) => {
-        const updatedTime = { ...time };
-        if (time.sec > 0) updatedTime.sec--;
+        const updatedInterval = { ...time };
+        if (time.sec > 0) updatedInterval.sec--;
         if (time.sec === 0) {
           if (time.min === 0) {
             clearInterval(myInterval);
           } else if (time.min > 0) {
-            updatedTime.min--;
-            updatedTime.sec = 59;
+            updatedInterval.min--;
+            updatedInterval.sec = 59;
           }
         }
-        return updatedTime;
+        return updatedInterval;
       });
-    }, 1000);
+    }, 100);
     setTimer(myInterval);
   };
 
@@ -69,7 +69,6 @@ const Timer = () => {
   };
 
   const nextTimer = (session) => {
-    // pauseTimer();
     if (isActive) {
       if (window.confirm('The timer is still running,do you want to change?')) {
         dispatch(
@@ -80,8 +79,6 @@ const Timer = () => {
           })
         );
         pauseTimer();
-      } else {
-        // startTimer();
       }
     } else {
       dispatch(
@@ -95,7 +92,7 @@ const Timer = () => {
   };
 
   const pomodoroTimer = () => {
-    percentage(pomTime);
+    percentage();
     nextTimer({
       name: MODES.POMODORO,
       time: pomTime,
@@ -104,7 +101,7 @@ const Timer = () => {
   };
 
   const shortBreakTimer = () => {
-    percentage(shortTime);
+    percentage();
     nextTimer({
       name: MODES.SHORT_BREAK,
       time: shortTime,
@@ -113,7 +110,7 @@ const Timer = () => {
   };
 
   const longBreakTimer = () => {
-    percentage(longTime);
+    percentage();
     nextTimer({
       name: MODES.LONG_BREAK,
       time: longTime,
@@ -131,6 +128,14 @@ const Timer = () => {
     }
   };
   const btnStyle = { color: bgColor };
+
+  React.useEffect(() => {
+    nextTimer({
+      name: MODES.POMODORO,
+      time: pomTime,
+      bgColor: COLORS[MODES.POMODORO],
+    });
+  }, [pomTime]);
 
   return (
     <>

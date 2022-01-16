@@ -7,11 +7,11 @@ const initialState = {
   globalStyle: COLORS[MODES.POMODORO],
   autoBreaks: false,
   autoPomodoros: false,
-  longBreakInterval: 1,
+  longBreakInterval: 2,
   progress: 0,
   pomTime: 25,
-  shortTime: 5,
-  longTime: 3,
+  shortTime: 3,
+  longTime: 5,
 };
 
 const timerSlice = createSlice({
@@ -42,6 +42,9 @@ const timerSlice = createSlice({
     setLongBreakInterval: (state, action) => {
       state.longBreakInterval = action.payload;
     },
+    // setIntervalMin(state) {
+    //   state.longBreakInterval = state.longBreakInterval - 1;
+    // },
   },
 });
 
@@ -52,7 +55,7 @@ export const {
   setAutoBreaks,
   setAutoPomodoros,
   setLongBreakInterval,
-  mode,
+  setIntervalMin,
 } = timerSlice.actions;
 
 export default timerSlice.reducer;

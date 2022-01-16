@@ -1,6 +1,6 @@
 import classes from './Progress.module.css';
 
-export default function ProgressPercentage({ percent }) {
+export default function Progress({ percent }) {
   return (
     <div className={classes.container}>
       <div className={classes.progress} style={{ width: `${percent}%` }} />

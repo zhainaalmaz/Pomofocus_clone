@@ -7,10 +7,10 @@ import ReportsIcon from '../../assets/Vector2.png';
 import ModalSettings from './Settings/Settings';
 import loginIcon from '../../assets/loginIcon.png';
 import { useSelector } from 'react-redux';
-import ProgressPercentage from '../UI/Progress/Progress';
+import Progress from '../UI/Progress/Progress';
 
 const Header = () => {
-  const perProgress = useSelector((state) => state.timer.progress);
+  const percentProgress = useSelector((state) => state.timer.progress);
 
   const [isShowSettings, setIsShowSettings] = useState(false);
 
@@ -65,7 +65,7 @@ const Header = () => {
         </ul>
       </div>
       <div>
-        <ProgressPercentage percent={perProgress} />
+        <Progress percent={percentProgress} />
       </div>
     </header>
   );

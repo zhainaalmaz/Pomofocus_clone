@@ -85,7 +85,6 @@ const ModalSettings = (props) => {
           <h2>Auto start Breaks?</h2>
           <Switch
             checked={autoBreaks}
-            on={autoBreaks}
             onClick={(e) => dispatch(setAutoBreaks(e.target.value))}
           />
         </div>
@@ -94,7 +93,6 @@ const ModalSettings = (props) => {
           <h2>Auto start Pomodoro?</h2>
           <Switch
             checked={autoPomodoros}
-            on={autoPomodoros}
             onClick={(e) => dispatch(setAutoPomodoros(e.target.value))}
           />
         </div>
@@ -105,7 +103,7 @@ const ModalSettings = (props) => {
             defaulValue={longBreakInterval}
             type="number"
             min={1}
-            onChange={(e) => dispatch(setLongBreakInterval())}
+            onClick={(e) => dispatch(setLongBreakInterval(e.target.value))}
           />
         </div>
         <img className={classes.line} src={line10} alt="line10" />
