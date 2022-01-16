@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from '../../UI/Modal/Modal';
 import Switch from './Switch';
 import classes from './Settings.module.css';
@@ -28,9 +28,9 @@ const ModalSettings = (props) => {
   } = useSelector((state) => state.timer);
 
   const dispatch = useDispatch();
-  const [pomoTime, setPomTime] = React.useState(pomTime);
-  const [shorotTime, setShortTime] = React.useState(shortTime);
-  const [longoTime, setLongTime] = React.useState(longTime);
+  const [pomoTime, setPomTime] = useState(pomTime);
+  const [shorotTime, setShortTime] = useState(shortTime);
+  const [longoTime, setLongTime] = useState(longTime);
 
   const submitHandler = (e) => {
     e.preventDefault();

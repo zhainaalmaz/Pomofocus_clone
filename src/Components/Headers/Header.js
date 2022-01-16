@@ -23,7 +23,7 @@ const Header = () => {
   };
 
   return (
-    <header>
+    <>
       <div className={classes.container}>
         <Logo onClick={updatedPomodoro} />
         <ul className={classes.nav}>
@@ -32,7 +32,7 @@ const Header = () => {
               <img
                 src={SettingsIcon}
                 style={{ width: '15px', marginRight: '5px' }}
-                alt="vector"
+                alt="/"
               />
               Settings
             </Button>
@@ -43,7 +43,7 @@ const Header = () => {
               <img
                 src={ReportsIcon}
                 style={{ width: '15px', marginRight: '5px' }}
-                alt="vector2"
+                alt="/"
               ></img>
               Reports
             </Button>
@@ -57,7 +57,7 @@ const Header = () => {
                   color: 'white',
                 }}
                 src={loginIcon}
-                alt="loginIcon"
+                alt="/"
               />
               Login
             </Button>
@@ -67,7 +67,7 @@ const Header = () => {
       <div>
         <Progress percent={percentProgress} />
       </div>
-    </header>
+    </>
   );
 };
 

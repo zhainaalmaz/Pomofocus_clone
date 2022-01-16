@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classes from './Timer.module.css';
 import Button from '../UI/Button/Button';
@@ -14,17 +14,16 @@ const Timer = () => {
   const bgColor = useSelector((state) => state.timer.globalStyle);
   const mode = useSelector((state) => state.timer.mode);
 
-  const [timer, setTimer] = React.useState(null);
-  const [isActive, setIsActive] = React.useState(false);
-  const [time, setTime] = React.useState({
+  const [timer, setTimer] = useState(null);
+  const [isActive, setIsActive] = useState(false);
+  const [time, setTime] = useState({
     min: mode.time,
     sec: 0,
   });
 
-  React.useEffect(() => setTime({ min: mode.time, sec: 0 }), [mode]);
-
+  useEffect(() => setTime({ min: mode.time, sec: 0 }), [mode]);
   const perRef = useRef();
-  React.useEffect(() => (perRef.current = mode.time * 60), [mode.time]);
+  useEffect(() => (perRef.current = mode.time * 60), [mode.time]);
 
   const percentage = () => {
     dispatch(setProgress(perRef.current--));
@@ -92,30 +91,33 @@ const Timer = () => {
   };
 
   const pomodoroTimer = () => {
-    percentage();
     nextTimer({
       name: MODES.POMODORO,
       time: pomTime,
       bgColor: COLORS[MODES.POMODORO],
     });
+    perRef.current = null;
+    percentage();
   };
 
   const shortBreakTimer = () => {
-    percentage();
     nextTimer({
       name: MODES.SHORT_BREAK,
       time: shortTime,
       bgColor: COLORS[MODES.SHORT_BREAK],
     });
+    perRef.current = null;
+    percentage();
   };
 
   const longBreakTimer = () => {
-    percentage();
     nextTimer({
       name: MODES.LONG_BREAK,
       time: longTime,
       bgColor: COLORS[MODES.LONG_BREAK],
     });
+    perRef.current = null;
+    percentage();
   };
 
   const skipTimer = () => {
@@ -129,7 +131,7 @@ const Timer = () => {
   };
   const btnStyle = { color: bgColor };
 
-  React.useEffect(() => {
+  useEffect(() => {
     nextTimer({
       name: MODES.POMODORO,
       time: pomTime,

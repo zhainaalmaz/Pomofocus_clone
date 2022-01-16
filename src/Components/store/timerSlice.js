@@ -28,23 +28,19 @@ const timerSlice = createSlice({
       state.mode = action.payload;
     },
     setProgress(state, action) {
-      const percent = action.payload; // 1500
+      const percent = action.payload;
       const total = state.mode.time * 60;
       state.progress = getPercent(total, percent);
     },
-    setAutoBreaks(state, action) {
-      console.log(state, action);
+    setAutoBreaks(state) {
       state.autoBreaks = !state.autoBreaks;
     },
-    setAutoPomodoros(state, action) {
+    setAutoPomodoros(state) {
       state.autoPomodoros = !state.autoPomodoros;
     },
     setLongBreakInterval: (state, action) => {
       state.longBreakInterval = action.payload;
     },
-    // setIntervalMin(state) {
-    //   state.longBreakInterval = state.longBreakInterval - 1;
-    // },
   },
 });
 
