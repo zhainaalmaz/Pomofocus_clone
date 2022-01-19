@@ -2,14 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Modal from '../../UI/Modal/Modal';
 import Switch from './Switch';
 import classes from './Settings.module.css';
-import line10 from '../../../assets/Line 10.png';
-import closeIcon from '../../../assets/close-line.png';
+import line10 from '../../../assets/icons/Line 10.png';
+import closeIcon from '../../../assets/icons/close-line.png';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  setTimes,
-  setLongBreakInterval,
-  setAutoBreaks,
-} from '../../store/timerSlice';
+import { setTimes, setLongBreakInterval } from '../../store/timerSlice';
 import Input from '../../UI/Input/Input';
 
 const Label = ({ children }) => (
@@ -55,7 +51,6 @@ const ModalSettings = (props) => {
         isAutoPomodoros,
       })
     );
-    // dispatch(setAutoBreaks(isAutoBreaks));
   };
   return (
     <Modal>

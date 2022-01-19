@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Button from '../UI/Button/Button';
 import Logo from '../UI/Logo/Logo';
 import classes from './Header.module.css';
-import SettingsIcon from '../../assets/Vector.png';
-import ReportsIcon from '../../assets/Vector2.png';
+import SettingsIcon from '../../assets/icons/Vector.png';
+import ReportsIcon from '../../assets/icons/Vector2.png';
 import ModalSettings from './Settings/Settings';
-import loginIcon from '../../assets/loginIcon.png';
+import loginIcon from '../../assets/icons/loginIcon.png';
 
 const Header = () => {
   const [isShowSettings, setIsShowSettings] = useState(false);

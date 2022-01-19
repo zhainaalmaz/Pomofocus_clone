@@ -1,9 +1,9 @@
 .container {
+  width: 950px;
+  margin-left: 250px;
   background-color: rgba(0, 0, 0, 0.1);
   height: 0.0625rem;
   margin-bottom: 2.5rem;
-  width: 950px;
-  margin-left: 250px;
 }
 
 .progress {
@@ -11,5 +11,5 @@
   border-radius: 6.25rem;
   background-color: white;
   transform: translateY(-0.0625rem);
-  width: 0.5%;
+  width: 0%;
 }

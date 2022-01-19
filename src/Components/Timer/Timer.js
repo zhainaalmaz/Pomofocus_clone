@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import classes from './Timer.module.css';
 import Button from '../UI/Button/Button';
 import CountTime from './CountTime';
-import skipIcon from '../../assets/Group.png';
+import skipIcon from '../../assets/icons/Group.png';
 import { setMode } from '../store/timerSlice';
 import { MODES, COLORS } from '../utils/constants';
 import Progress from '../UI/Progress/Progress';
@@ -60,7 +60,7 @@ const Timer = () => {
     intervalRef.current = setInterval(() => {
       setProgress((prev) => prev + 1);
       setTime((prevState) => updateTimer(prevState));
-    }, 100);
+    }, 1000);
     setTimer(intervalRef.current);
   }, [mode.name]);
 
@@ -100,7 +100,6 @@ const Timer = () => {
           time: mode.time,
         })
       );
-      // stopTimer();
     } else {
       dispatch(
         setMode({
@@ -178,7 +177,7 @@ const Timer = () => {
   }, [pomodoroTime]);
 
   return (
-    <>
+    <div>
       <div>
         <Progress percent={percentage} />
       </div>
@@ -221,7 +220,7 @@ const Timer = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

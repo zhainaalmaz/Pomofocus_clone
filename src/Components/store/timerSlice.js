@@ -29,14 +29,6 @@ const timerSlice = createSlice({
       state.globalStyle = action.payload.bgColor;
       state.mode = action.payload;
     },
-    // setAutoBreaks(state, action) {
-    //   console.log(action.payload);
-    //   state.autoBreaks = action.payload.isAutoBreaks;
-    // },
-    // setAutoPomodoros(state) {
-    //   console.log(state);
-    //   state.autoPomodoros = !state.autoPomodoros;
-    // },
     setLongBreakInterval: (state, action) => {
       console.log(action, state);
       state.longBreakInterval = action.payload;
