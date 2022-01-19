@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../../UI/Modal/Modal';
 import Switch from './Switch';
 import classes from './Settings.module.css';
@@ -6,10 +6,9 @@ import line10 from '../../../assets/Line 10.png';
 import closeIcon from '../../../assets/close-line.png';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  setAutoBreaks,
-  setAutoPomodoros,
   setTimes,
   setLongBreakInterval,
+  setAutoBreaks,
 } from '../../store/timerSlice';
 import Input from '../../UI/Input/Input';
 
@@ -22,23 +21,42 @@ const ModalSettings = (props) => {
     autoBreaks,
     autoPomodoros,
     longBreakInterval,
-    pomTime,
-    shortTime,
-    longTime,
+    pomodoroTime,
+    shortBreakTime,
+    longBreakTime,
   } = useSelector((state) => state.timer);
 
   const dispatch = useDispatch();
-  const [pomoTime, setPomTime] = useState(pomTime);
-  const [shorotTime, setShortTime] = useState(shortTime);
-  const [longoTime, setLongTime] = useState(longTime);
+  const [pomoTime, setPomTime] = useState(pomodoroTime);
+  const [shortTime, setShortTime] = useState(shortBreakTime);
+  const [longoTime, setLongTime] = useState(longBreakTime);
+  const [isAutoBreaks, setIsAutoBreaks] = useState(autoBreaks);
+  const [isAutoPomodoros, setIsAutoPomodoros] = useState(autoPomodoros);
+
+  useEffect(() => {
+    setIsAutoBreaks(autoBreaks);
+    setIsAutoPomodoros(autoPomodoros);
+  }, [autoBreaks, autoPomodoros]);
+
+  const pomodoroTimeHandler = (e) => {
+    setPomTime(e.target.value);
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
 
     props.showSetings();
-    dispatch(setTimes({ pomoTime, shorotTime, longoTime }));
+    dispatch(
+      setTimes({
+        pomoTime,
+        shortTime,
+        longoTime,
+        isAutoBreaks,
+        isAutoPomodoros,
+      })
+    );
+    // dispatch(setAutoBreaks(isAutoBreaks));
   };
-
   return (
     <Modal>
       <div className={classes.mainTitle}>
@@ -55,9 +73,9 @@ const ModalSettings = (props) => {
           <div className={classes.pomodoro}>
             <Label>Pomodoro</Label>
             <Input
-              onChange={(e) => setPomTime(e.target.value)}
+              onChange={pomodoroTimeHandler}
               type="number"
-              defaultValue={pomTime}
+              defaultValue={pomodoroTime}
             />
           </div>
           <div>
@@ -65,7 +83,7 @@ const ModalSettings = (props) => {
             <Input
               onChange={(e) => setShortTime(e.target.value)}
               type="number"
-              defaultValue={shortTime}
+              defaultValue={shortBreakTime}
             />
           </div>
           <div>
@@ -73,7 +91,7 @@ const ModalSettings = (props) => {
             <Input
               onChange={(e) => setLongTime(e.target.value)}
               type="number"
-              defaultValue={longTime}
+              defaultValue={longBreakTime}
             />
           </div>
         </div>
@@ -84,23 +102,23 @@ const ModalSettings = (props) => {
         <div className={classes.autStart}>
           <h2>Auto start Breaks?</h2>
           <Switch
-            checked={autoBreaks}
-            onClick={(e) => dispatch(setAutoBreaks(e.target.value))}
+            checked={isAutoBreaks}
+            onClick={(e) => setIsAutoBreaks(!isAutoBreaks)}
           />
         </div>
         <img className={classes.line} src={line10} alt="line10" />
         <div className={classes.autStart}>
           <h2>Auto start Pomodoro?</h2>
           <Switch
-            checked={autoPomodoros}
-            onClick={(e) => dispatch(setAutoPomodoros(e.target.value))}
+            checked={isAutoPomodoros}
+            onClick={(e) => setIsAutoPomodoros(!isAutoPomodoros)}
           />
         </div>
         <img className={classes.line} src={line10} alt="line10" />
         <div className={classes.autStart}>
           <h2>Long Break interval</h2>
           <Input
-            defaulValue={longBreakInterval}
+            defaultValue={longBreakInterval}
             type="number"
             min={1}
             onClick={(e) => dispatch(setLongBreakInterval(e.target.value))}

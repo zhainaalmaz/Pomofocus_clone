@@ -1,161 +1,202 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classes from './Timer.module.css';
 import Button from '../UI/Button/Button';
 import CountTime from './CountTime';
 import skipIcon from '../../assets/Group.png';
-import { setMode, setProgress } from '../store/timerSlice';
+import { setMode } from '../store/timerSlice';
 import { MODES, COLORS } from '../utils/constants';
+import Progress from '../UI/Progress/Progress';
 
 const Timer = () => {
   const dispatch = useDispatch();
 
-  const { pomTime, shortTime, longTime } = useSelector((state) => state.timer);
+  const intervalRef = useRef(null);
+  const { pomodoroTime, shortBreakTime, longBreakTime, longBreakInterval } =
+    useSelector((state) => state.timer);
   const bgColor = useSelector((state) => state.timer.globalStyle);
   const mode = useSelector((state) => state.timer.mode);
-
+  const autoStartBreak = useSelector((state) => state.timer.autoBreaks);
+  const autoStartPomodoro = useSelector((state) => state.timer.autoPomodoros);
   const [timer, setTimer] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [time, setTime] = useState({
     min: mode.time,
     sec: 0,
   });
+  const [autoBr, setAutoBr] = useState(autoStartBreak);
+  const [autoPom, setautoPom] = useState(autoStartPomodoro);
+  const [pomodoroCycle, setPomodoroCycle] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const percentage = (progress / (mode.time * 60)) * 100;
 
   useEffect(() => setTime({ min: mode.time, sec: 0 }), [mode]);
-  const perRef = useRef();
-  useEffect(() => (perRef.current = mode.time * 60), [mode.time]);
 
-  const percentage = () => {
-    dispatch(setProgress(perRef.current--));
+  const auto = useCallback(() => {
+    setAutoBr(autoStartBreak);
+    setautoPom(autoStartPomodoro);
+  }, [autoStartBreak, autoStartPomodoro]);
+
+  useEffect(() => {
+    auto();
+  }, [auto]);
+
+  const updateTimer = (timeData) => {
+    const updatedTime = { ...timeData };
+    if (updatedTime.sec > 0) {
+      updatedTime.sec--;
+    } else if (updatedTime.min > 0 && updatedTime.sec === 0) {
+      updatedTime.min--;
+      updatedTime.sec = 59;
+    }
+    return updatedTime;
   };
 
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
+    if (mode.name === MODES.POMODORO) {
+      setPomodoroCycle((prevState) => prevState + 1);
+    }
     setIsActive(true);
-    let myInterval = setInterval(() => {
-      percentage();
-      setTime((time) => {
-        const updatedInterval = { ...time };
-        if (time.sec > 0) updatedInterval.sec--;
-        if (time.sec === 0) {
-          if (time.min === 0) {
-            clearInterval(myInterval);
-          } else if (time.min > 0) {
-            updatedInterval.min--;
-            updatedInterval.sec = 59;
-          }
-        }
-        return updatedInterval;
-      });
+    intervalRef.current = setInterval(() => {
+      setProgress((prev) => prev + 1);
+      setTime((prevState) => updateTimer(prevState));
     }, 100);
-    setTimer(myInterval);
-  };
+    setTimer(intervalRef.current);
+  }, [mode.name]);
 
-  const pauseTimer = () => {
-    setIsActive(false);
-    clearInterval(timer);
-  };
+  useEffect(() => {
+    if (time.sec === 0 && time.min === 0) {
+      clearInterval(intervalRef.current);
+      setIsActive(false);
+      if (mode.name === MODES.POMODORO) {
+        if (pomodoroCycle === longBreakInterval) {
+          startLongBreakTimer();
+        } else {
+          startShortBreakTimer();
+        }
+      } else if (mode.name === MODES.SHORT_BREAK) {
+        startPomodoroTimer();
+      } else if (mode.name === MODES.LONG_BREAK) {
+        startPomodoroTimer();
+      }
+    }
+  }, [time]);
 
   const stopTimer = () => {
-    pauseTimer();
-    if (window.confirm('Do you want to pause the Timer?')) {
-    } else {
-      startTimer();
-    }
+    setIsActive(false);
+    clearInterval(timer);
   };
 
   const timerSwitcher = () => {
     isActive ? stopTimer() : startTimer();
   };
 
-  const nextTimer = (session) => {
+  const changeTimer = (mode) => {
     if (isActive) {
-      if (window.confirm('The timer is still running,do you want to change?')) {
-        dispatch(
-          setMode({
-            name: session.name,
-            time: session.time,
-            bgColor: session.bgColor,
-          })
-        );
-        pauseTimer();
-      }
+      dispatch(
+        setMode({
+          name: mode.name,
+          bgColor: mode.bgColor,
+          time: mode.time,
+        })
+      );
+      // stopTimer();
     } else {
       dispatch(
         setMode({
-          name: session.name,
-          time: session.time,
-          bgColor: session.bgColor,
+          name: mode.name,
+          bgColor: mode.bgColor,
+          time: mode.time,
         })
       );
     }
+    stopTimer();
   };
 
-  const pomodoroTimer = () => {
-    nextTimer({
+  const startPomodoroTimer = () => {
+    setProgress(0);
+    setTime({ min: pomodoroTime, sec: 0 });
+    changeTimer({
       name: MODES.POMODORO,
-      time: pomTime,
       bgColor: COLORS[MODES.POMODORO],
+      time: pomodoroTime,
     });
-    perRef.current = null;
-    percentage();
+    autoPom ? startTimer() : stopTimer();
   };
 
-  const shortBreakTimer = () => {
-    nextTimer({
+  const startShortBreakTimer = () => {
+    setProgress(0);
+    setTime({ min: shortBreakTime, sec: 0 });
+    changeTimer({
       name: MODES.SHORT_BREAK,
-      time: shortTime,
       bgColor: COLORS[MODES.SHORT_BREAK],
+      time: shortBreakTime,
     });
-    perRef.current = null;
-    percentage();
+    console.log(autoPom);
+    autoBr ? startTimer() : stopTimer();
   };
 
-  const longBreakTimer = () => {
-    nextTimer({
+  const startLongBreakTimer = () => {
+    setPomodoroCycle(0);
+    setProgress(0);
+    setTime({ min: longBreakTime, sec: 0 });
+    changeTimer({
       name: MODES.LONG_BREAK,
-      time: longTime,
       bgColor: COLORS[MODES.LONG_BREAK],
+      time: longBreakTime,
     });
-    perRef.current = null;
-    percentage();
+    autoBr ? startTimer() : stopTimer();
   };
 
   const skipTimer = () => {
-    if (MODES.POMODORO) {
-      shortBreakTimer();
-    } else if (MODES.SHORT_BREAK) {
-      longBreakTimer();
-    } else if (MODES.LONG_BREAK) {
-      pomodoroTimer();
+    if (
+      window.confirm(
+        'Are you sure you want to finish the round early? (The remaining time will not be counted in the report.)'
+      )
+    ) {
+      if (mode.name === MODES.POMODORO) {
+        if (pomodoroCycle === longBreakInterval) {
+          startLongBreakTimer();
+        } else {
+          startShortBreakTimer();
+        }
+      } else if (mode.name === MODES.SHORT_BREAK) {
+        startPomodoroTimer();
+      } else if (mode.name === MODES.LONG_BREAK) {
+        startPomodoroTimer();
+      }
     }
   };
   const btnStyle = { color: bgColor };
 
   useEffect(() => {
-    nextTimer({
+    changeTimer({
       name: MODES.POMODORO,
-      time: pomTime,
       bgColor: COLORS[MODES.POMODORO],
+      time: pomodoroTime,
     });
-  }, [pomTime]);
+  }, [pomodoroTime]);
 
   return (
     <>
+      <div>
+        <Progress percent={percentage} />
+      </div>
       <div className={classes.container}>
         <div className={classes.content}>
           <ul className={classes.buttons}>
             <li>
-              <Button className={classes.btn} onClick={pomodoroTimer}>
+              <Button className={classes.btn} onClick={startPomodoroTimer}>
                 Pomofocus
               </Button>
             </li>
             <li>
-              <Button className={classes.btn} onClick={shortBreakTimer}>
+              <Button className={classes.btn} onClick={startShortBreakTimer}>
                 Short break
               </Button>
             </li>
             <li>
-              <Button className={classes.btn} onClick={longBreakTimer}>
+              <Button className={classes.btn} onClick={startLongBreakTimer}>
                 Long Break
               </Button>
             </li>

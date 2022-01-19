@@ -11,6 +11,7 @@ const Input = ({ id, type, placeholder, value, onChange, defaultValue }) => {
         type={type}
         id={id}
         min={1}
+        max={10}
         placeholder={placeholder}
         defaultValue={defaultValue}
       />

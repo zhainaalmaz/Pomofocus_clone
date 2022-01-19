@@ -1,17 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { COLORS, INIT_TIME, MODES } from '../utils/constants';
-import { getPercent } from '../utils/helpers';
+import { COLORS, MODES } from '../utils/constants';
 
 const initialState = {
-  mode: { name: MODES.POMODORO, time: INIT_TIME.POMODORO },
+  mode: { name: MODES.POMODORO, time: 1 },
   globalStyle: COLORS[MODES.POMODORO],
   autoBreaks: false,
   autoPomodoros: false,
   longBreakInterval: 2,
-  progress: 0,
-  pomTime: 25,
-  shortTime: 3,
-  longTime: 5,
+  pomodoroTime: 1,
+  shortBreakTime: 1,
+  longBreakTime: 1,
+  round: 1,
 };
 
 const timerSlice = createSlice({
@@ -19,26 +18,27 @@ const timerSlice = createSlice({
   initialState,
   reducers: {
     setTimes(state, action) {
-      state.pomTime = action.payload.pomoTime;
-      state.shortTime = action.payload.shorotTime;
-      state.longTime = action.payload.longoTime;
+      state.pomodoroTime = action.payload.pomoTime;
+      state.shortBreakTime = action.payload.shortTime;
+      state.longBreakTime = action.payload.longoTime;
+      state.autoBreaks = action.payload.isAutoBreaks;
+      state.autoPomodoros = action.payload.isAutoPomodoros;
     },
     setMode(state, action) {
+      console.log(action);
       state.globalStyle = action.payload.bgColor;
       state.mode = action.payload;
     },
-    setProgress(state, action) {
-      const percent = action.payload;
-      const total = state.mode.time * 60;
-      state.progress = getPercent(total, percent);
-    },
-    setAutoBreaks(state) {
-      state.autoBreaks = !state.autoBreaks;
-    },
-    setAutoPomodoros(state) {
-      state.autoPomodoros = !state.autoPomodoros;
-    },
+    // setAutoBreaks(state, action) {
+    //   console.log(action.payload);
+    //   state.autoBreaks = action.payload.isAutoBreaks;
+    // },
+    // setAutoPomodoros(state) {
+    //   console.log(state);
+    //   state.autoPomodoros = !state.autoPomodoros;
+    // },
     setLongBreakInterval: (state, action) => {
+      console.log(action, state);
       state.longBreakInterval = action.payload;
     },
   },
@@ -47,7 +47,6 @@ const timerSlice = createSlice({
 export const {
   setTimes,
   setMode,
-  setProgress,
   setAutoBreaks,
   setAutoPomodoros,
   setLongBreakInterval,
